@@ -48,7 +48,15 @@ public UserManager<IdentityUser> UserManager;
       }
       foreach (IdentityError err in result.Errors)
       {
-      ModelState.AddModelError("", err.Description);
+        if (err.Description.Contains("letters or digits"))
+        {
+            string message = err.Description.Replace("can only contain letters or digits", "can only contain letters");
+            ModelState.AddModelError("", message);
+        }
+        else
+        {
+            ModelState.AddModelError("", err.Description);
+        }
       }
       }
       return Page();

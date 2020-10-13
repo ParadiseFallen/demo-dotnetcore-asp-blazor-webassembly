@@ -40,6 +40,27 @@ namespace Advanced {
 
             services.AddDbContext<IdentityContext>(opts => opts.UseSqlServer(Configuration["ConnectionStrings:IdentityConnection"]));
             services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<IdentityContext>();
+            services.Configure<IdentityOptions>(opts => {
+              opts.Password.RequiredLength = 8;
+              opts.Password.RequireNonAlphanumeric = false;
+              opts.Password.RequireLowercase = false;
+              opts.Password.RequireUppercase = false;
+              opts.Password.RequireDigit = true;
+              opts.User.RequireUniqueEmail = true;
+              // opts.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyz";
+              opts.User.AllowedUserNameCharacters = new Func<string>(() => {
+                var sb = new System.Text.StringBuilder();
+                for (ushort i = 65; i < 122; i++)
+                {
+                    if (i < 91 || i > 96)
+                    {
+                        System.Console.WriteLine((char)i);
+                        sb.Append((char)i);
+                    }
+                }
+                return sb.ToString();
+              })();
+            });
         }
 
         public void Configure(IApplicationBuilder app, DataContext context) {
