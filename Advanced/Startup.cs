@@ -60,6 +60,9 @@ namespace Advanced {
                 }
                 return sb.ToString();
               })();
+              opts.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromSeconds(15);
+              opts.Lockout.MaxFailedAccessAttempts = 3;
+              opts.Lockout.AllowedForNewUsers = true;
             });
         }
 

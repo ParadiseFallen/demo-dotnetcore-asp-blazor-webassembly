@@ -1,0 +1,61 @@
+@page
+@model LoginModel
+<div class="bg-primary text-center text-white p-2">
+  <h4>Log In</h4>
+</div>
+<div class="m-1 text-danger" asp-validation-summary="All"></div>
+<form method="post">
+  <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
+  <div class="form-group">
+    <label>UserName</label>
+    <input class="form-control" asp-for="UserName" />
+  </div>
+  <div class="form-group">
+    <label>Password</label>
+    <input asp-for="Password" type="password" class="form-control" /></div>
+  <button class="btn btn-primary" type="submit">Log In</button>
+</form>
+@functions {
+  public class LoginModel : PageModel
+  {
+    private SignInManager<IdentityUser> signInManager;
+    private Microsoft.AspNetCore.Identity.SignInResult result;
+    public LoginModel(SignInManager<IdentityUser> signinMgr)
+    {
+      signInManager = signinMgr;
+    }
+    [BindProperty]
+    [Required]
+    public string UserName { get; set; }
+    [BindProperty]
+    [Required]
+    public string Password { get; set; }
+    [BindProperty(SupportsGet = true)]
+    public string ReturnUrl { get; set; }
+    public IActionResult OnGet() {
+      if(result != null && result.IsLockedOut) {
+        return Redirect("/lockedout");
+      } else {
+        return Page();
+      }
+    }
+    public async Task<IActionResult> OnPostAsync()
+    {
+      if (ModelState.IsValid)
+      {
+        result =
+          await signInManager.PasswordSignInAsync(UserName,
+          Password,
+          true, true);
+        if (result.Succeeded)
+        {
+          return Redirect(ReturnUrl ?? "/");
+        } else if(result.IsLockedOut) {
+          return Redirect("/lockedout");
+        }
+        ModelState.AddModelError("", "Invalid username or password");
+      }
+      return Page();
+    }
+  }
+}
