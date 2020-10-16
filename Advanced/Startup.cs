@@ -71,7 +71,8 @@ namespace Advanced {
             app.UseDeveloperExceptionPage();
             app.UseStaticFiles();
             app.UseRouting();
-            // app.UseAuthentication();
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.UseEndpoints(endpoints => {
                 endpoints.MapControllerRoute("controllers",
                     "controllers/{controller=Home}/{action=Index}/{id?}");
@@ -89,6 +90,7 @@ namespace Advanced {
                 opts.UseClientSideBlazorFiles<BlazorWebAssembly.Startup>());
 
             SeedData.SeedDatabase(context);
+            IdentitySeedData.CreateAdminAccount(app.ApplicationServices, Configuration);
         }
     }
 }
