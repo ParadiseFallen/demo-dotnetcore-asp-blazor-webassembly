@@ -71,7 +71,7 @@ namespace Advanced {
             app.UseDeveloperExceptionPage();
             app.UseStaticFiles();
             app.UseRouting();
-
+            // app.UseAuthentication();
             app.UseEndpoints(endpoints => {
                 endpoints.MapControllerRoute("controllers",
                     "controllers/{controller=Home}/{action=Index}/{id?}");

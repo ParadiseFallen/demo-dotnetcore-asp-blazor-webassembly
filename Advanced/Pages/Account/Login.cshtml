@@ -19,7 +19,6 @@
   public class LoginModel : PageModel
   {
     private SignInManager<IdentityUser> signInManager;
-    private Microsoft.AspNetCore.Identity.SignInResult result;
     public LoginModel(SignInManager<IdentityUser> signinMgr)
     {
       signInManager = signinMgr;
@@ -32,18 +31,11 @@
     public string Password { get; set; }
     [BindProperty(SupportsGet = true)]
     public string ReturnUrl { get; set; }
-    public IActionResult OnGet() {
-      if(result != null && result.IsLockedOut) {
-        return Redirect("/lockedout");
-      } else {
-        return Page();
-      }
-    }
     public async Task<IActionResult> OnPostAsync()
     {
       if (ModelState.IsValid)
       {
-        result =
+        Microsoft.AspNetCore.Identity.SignInResult result =
           await signInManager.PasswordSignInAsync(UserName,
           Password,
           true, true);
