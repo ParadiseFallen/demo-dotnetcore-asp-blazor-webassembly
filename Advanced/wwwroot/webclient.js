@@ -6,11 +6,27 @@ window.addEventListener("DOMContentLoaded", () => {
   createButton(controlDiv, "Log In", login);
   createButton(controlDiv, "Log Out", logout);
 });
-function login() {
-  // do nothing
+async function login() {
+  let response = await fetch("/api/account/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ username: username, password: password })
+  });
+  if (response.ok) {
+    displayData("Logged in");
+  } else {
+    displayData(`Error: ${response.status}: ${response.statusText}`);
+  }
 }
-function logout() {
-  // do nothing
+async function logout() {
+  let response = await fetch("/api/account/logout", {
+    method: "POST"
+  });
+  if (response.ok) {
+    displayData("Logged out");
+  } else {
+    displayData(`Error: ${response.status}: ${response.statusText}`);
+  }
 }
 async function getData() {
   let response = await fetch("/api/people");

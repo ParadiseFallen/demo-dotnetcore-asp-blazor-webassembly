@@ -72,7 +72,8 @@ namespace Advanced
         opts.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromSeconds(15);
         opts.Lockout.MaxFailedAccessAttempts = 3;
         opts.Lockout.AllowedForNewUsers = true;
-        services.AddAuthentication(opts =>
+      });
+      services.AddAuthentication(opts =>
         {
           opts.DefaultScheme =
           CookieAuthenticationDefaults.AuthenticationScheme;
@@ -86,7 +87,6 @@ namespace Advanced
           e.OnRedirectToAccessDenied,
           "/api", StatusCodes.Status403Forbidden);
         });
-      });
     }
 
     public void Configure(IApplicationBuilder app, DataContext context)

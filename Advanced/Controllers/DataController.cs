@@ -3,11 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Advanced.Controllers {
 
     [ApiController]
     [Route("/api/people")]
+    [Authorize(Roles="Admins")]
     public class DataController : ControllerBase {
         private DataContext context;
 
