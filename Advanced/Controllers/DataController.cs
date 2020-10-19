@@ -9,7 +9,8 @@ namespace Advanced.Controllers {
 
     [ApiController]
     [Route("/api/people")]
-    [Authorize(Roles="Admins")]
+    // [Authorize(Roles="Admins")]
+    [Authorize(AuthenticationSchemes = "Identity.Application, Bearer")] 
     public class DataController : ControllerBase {
         private DataContext context;
 
